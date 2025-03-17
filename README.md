@@ -20,8 +20,8 @@ A full-stack todo list application built with the MERN stack (MongoDB, Express.j
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/todo-list.git
-cd todo-list
+git clone https://github.com/Shivakarthikeya23/ToDoList.git
+cd ToDoList
 ```
 
 2. Install backend dependencies:
@@ -96,7 +96,3 @@ npm start
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License. 
