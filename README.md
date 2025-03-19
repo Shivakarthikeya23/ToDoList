@@ -24,37 +24,37 @@ git clone https://github.com/Shivakarthikeya23/ToDoList.git
 cd ToDoList
 ```
 
-2. Install backend dependencies:
+2. Install server dependencies:
 ```bash
-cd backend
+cd server
 npm install
 ```
 
-3. Install frontend dependencies:
+3. Install client dependencies:
 ```bash
-cd ../frontend
+cd ../client
 npm install
 ```
 
-4. Create a `.env` file in the backend directory with the following variables:
+4. Create a `.env` file in the server directory with the following variables:
 ```
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 PORT=5000
-FRONTEND_URL=http://localhost:3000
+client_URL=http://localhost:3000
 ```
 
 ## Running the Application
 
-1. Start the backend server:
+1. Start the server server:
 ```bash
-cd backend
+cd server
 npm run dev
 ```
 
-2. Start the frontend development server:
+2. Start the client development server:
 ```bash
-cd frontend
+cd client
 npm start
 ```
 
@@ -75,14 +75,14 @@ npm start
 
 ## Technologies Used
 
-### Frontend
+### Frontend/Client
 - React
 - React Router
 - Axios
 - Bootstrap
 - Context API for state management
 
-### Backend
+### Backend/Server
 - Node.js
 - Express.js
 - MongoDB with Mongoose
