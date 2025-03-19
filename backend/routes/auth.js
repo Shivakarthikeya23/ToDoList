@@ -2,20 +2,33 @@ const express = require("express");
 const { body } = require("express-validator");
 const auth = require("../middleware/auth");
 const validate = require("../middleware/validate");
-const { login, register, logout } = require("../controllers/auth.js");
+const {
+  login,
+  register,
+  logout,
+  forgotPassword,
+  resetPassword,
+  getMe,
+  verifySecurityAnswer,
+} = require("../controllers/auth");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 const router = express.Router();
 
 // Validation rules
 const registerValidation = [
-  body("username")
-    .trim()
-    .isLength({ min: 3 })
-    .withMessage("Username must be at least 3 characters long"),
   body("email").isEmail().withMessage("Please enter a valid email"),
   body("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long"),
+  body("securityQuestion")
+    .notEmpty()
+    .withMessage("Please select a security question"),
+  body("securityAnswer")
+    .notEmpty()
+    .withMessage("Please provide an answer to the security question"),
   validate,
 ];
 
@@ -25,18 +38,23 @@ const loginValidation = [
   validate,
 ];
 
+const resetPasswordValidation = [
+  body("email").isEmail().withMessage("Please enter a valid email"),
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters long"),
+  validate,
+];
+
 // Auth routes
-router.post("/api/register", registerValidation, register);
-router.post("/api/login", loginValidation, login);
-router.post("/api/logout", logout);
+router.post("/register", registerValidation, register);
+router.post("/login", loginValidation, login);
+router.post("/logout", auth, logout);
+router.post("/forgot-password", forgotPassword);
+router.post("/verify-security-answer", verifySecurityAnswer);
+router.post("/reset-password", resetPasswordValidation, resetPassword);
 
 // Get current user
-router.get("/api/me", auth, (req, res) => {
-  res.json({
-    _id: req.user._id,
-    username: req.user.username,
-    email: req.user.email,
-  });
-});
+router.get("/me", auth, getMe);
 
 module.exports = router;

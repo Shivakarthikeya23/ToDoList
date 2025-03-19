@@ -5,7 +5,7 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 
 // Get all tasks for the authenticated user
-router.get("/api/tasks", auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user._id });
     res.json(tasks);
@@ -15,20 +15,26 @@ router.get("/api/tasks", auth, async (req, res) => {
 });
 
 // Create a new task
-router.post("/api/tasks", auth, async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
+    console.log("Creating task with data:", req.body);
+    console.log("User ID:", req.user._id);
+
     const task = await Task.create({
       ...req.body,
       user: req.user._id,
     });
+
+    console.log("Task created successfully:", task);
     res.status(201).json(task);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    console.error("Error creating task:", error);
+    res.status(500).json({ error: error.message || "Server error" });
   }
 });
 
 // Update a task
-router.put("/api/tasks/:id", auth, async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   try {
     const task = await Task.findOneAndUpdate(
       { _id: req.params.id, user: req.user._id },
@@ -45,7 +51,7 @@ router.put("/api/tasks/:id", auth, async (req, res) => {
 });
 
 // Delete a task
-router.delete("/api/tasks/:id", auth, async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({
       _id: req.params.id,
