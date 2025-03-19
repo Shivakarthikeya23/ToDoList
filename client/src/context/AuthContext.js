@@ -3,6 +3,10 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
+// Configure axios defaults
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common["Content-Type"] = "application/json";
+
 const AuthContext = createContext(null);
 
 export const useAuth = () => {
