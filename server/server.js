@@ -16,27 +16,25 @@ app.use(cookieParser());
 // CORS configuration
 app.use(
   cors({
-    origin: "https://to-do-list-client-five.vercel.app",
+    origin: true, // Allow all origins
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    preflightContinue: false,
   })
 );
-
-// Handle preflight requests
-app.options("*", cors());
 
 // Root route handler
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Todo App API" });
 });
 
-// Connect to MongoDB
+// Connect to MongoDB with timeout options
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/todo-app", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+    socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));

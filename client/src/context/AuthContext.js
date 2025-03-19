@@ -8,6 +8,17 @@ const API_URL = (
 // Configure axios defaults
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common["Content-Type"] = "application/json";
+axios.defaults.timeout = 10000; // 10 second timeout
+
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: API_URL,
+  timeout: 10000,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 const AuthContext = createContext(null);
 
@@ -31,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        const response = await axios.get(`${API_URL}/api/me`, {
+        const response = await api.get("/api/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data);
@@ -46,7 +57,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/api/login`, {
+      const response = await api.post("/api/login", {
         email,
         password,
       });
@@ -68,7 +79,7 @@ export const AuthProvider = ({ children }) => {
   ) => {
     try {
       console.log("Registering with:", { email, securityQuestion });
-      const response = await axios.post(`${API_URL}/api/register`, {
+      const response = await api.post("/api/register", {
         email,
         password,
         securityQuestion,
