@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
 const todoSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: [true, "Must have a user id"],
+  },
+
   title: { type: String, required: [true, "Must provide a title"] },
   description: { type: String, required: [true, "Must provide a description"] },
   completed: { type: Boolean, default: false },

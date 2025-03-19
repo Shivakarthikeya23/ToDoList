@@ -4,8 +4,8 @@ const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-// Get all tasks for logged in user
-router.get("/", auth, async (req, res) => {
+// Get all tasks for the authenticated user
+router.get("/api/tasks", auth, async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user._id });
     res.json(tasks);
@@ -14,22 +14,21 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// Create new task
-router.post("/", auth, async (req, res) => {
+// Create a new task
+router.post("/api/tasks", auth, async (req, res) => {
   try {
-    const task = new Task({
+    const task = await Task.create({
       ...req.body,
       user: req.user._id,
     });
-    await task.save();
     res.status(201).json(task);
   } catch (error) {
-    res.status(400).json({ error: "Invalid task data" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-// Update task
-router.put("/:id", auth, async (req, res) => {
+// Update a task
+router.put("/api/tasks/:id", auth, async (req, res) => {
   try {
     const task = await Task.findOneAndUpdate(
       { _id: req.params.id, user: req.user._id },
@@ -41,12 +40,12 @@ router.put("/:id", auth, async (req, res) => {
     }
     res.json(task);
   } catch (error) {
-    res.status(400).json({ error: "Invalid update" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-// Delete task
-router.delete("/:id", auth, async (req, res) => {
+// Delete a task
+router.delete("/api/tasks/:id", auth, async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({
       _id: req.params.id,
@@ -55,7 +54,7 @@ router.delete("/:id", auth, async (req, res) => {
     if (!task) {
       return res.status(404).json({ error: "Task not found" });
     }
-    res.json({ message: "Task deleted" });
+    res.json({ message: "Task deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
