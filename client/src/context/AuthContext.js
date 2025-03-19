@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL = (
+  process.env.REACT_APP_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "");
 
 // Configure axios defaults
 axios.defaults.withCredentials = true;

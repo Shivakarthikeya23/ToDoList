@@ -16,12 +16,16 @@ app.use(cookieParser());
 // CORS configuration
 app.use(
   cors({
-    origin: "*", // Allow all origins during development
+    origin: "https://to-do-list-client-five.vercel.app",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    preflightContinue: false,
   })
 );
+
+// Handle preflight requests
+app.options("*", cors());
 
 // Root route handler
 app.get("/", (req, res) => {
