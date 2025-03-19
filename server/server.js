@@ -23,6 +23,11 @@ app.use(
   })
 );
 
+// Root route handler
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to Todo App API" });
+});
+
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/todo-app", {
